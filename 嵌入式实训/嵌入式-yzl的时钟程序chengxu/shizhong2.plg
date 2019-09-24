@@ -1,0 +1,83 @@
+<html>
+<body>
+<pre>
+<h1>µVision3 Build Log</h1>
+<h2>Project:</h2>
+F:\proteus\ ±÷”\chengxu\shizhong2.uv2
+Project File Date:  08/10/2009
+
+<h2>Output:</h2>
+Build target 'Target 1'
+assembling STARTUP.A51...
+compiling shizhong2.c...
+SHIZHONG2.C(66): error C202: 'count': undefined identifier
+SHIZHONG2.C(77): error C202: 'count': undefined identifier
+SHIZHONG2.C(102): error C202: 'count': undefined identifier
+SHIZHONG2.C(103): error C202: 'count': undefined identifier
+SHIZHONG2.C(104): error C202: 'count': undefined identifier
+Target not created
+Build target 'Target 1'
+assembling STARTUP.A51...
+compiling shizhong2.c...
+linking...
+Program Size: data=22.0 xdata=0 code=726
+"shizhong2" - 0 Error(s), 0 Warning(s).
+Build target 'Target 1'
+assembling STARTUP.A51...
+compiling shizhong2.c...
+linking...
+Program Size: data=22.0 xdata=0 code=726
+creating hex file from "shizhong2"...
+"shizhong2" - 0 Error(s), 0 Warning(s).
+Build target 'Target 1'
+assembling STARTUP.A51...
+compiling shizhong2.c...
+SHIZHONG2.C(22): error C132: 'read_key': not in formal parameter list
+SHIZHONG2.C(23): error C132: 'led': not in formal parameter list
+SHIZHONG2.C(27): error C132: 'main': not in formal parameter list
+SHIZHONG2.C(27): error C141: syntax error near '{'
+SHIZHONG2.C(28): error C136: 'P2': 'void' on variable
+SHIZHONG2.C(28): error C244: 'P2': can't initialize, bad type or class
+SHIZHONG2.C(28): error C136: 'P2': 'void' on variable
+SHIZHONG2.C(28): error C132: 'P2': not in formal parameter list
+SHIZHONG2.C(29): error C244: 'hour': can't initialize, bad type or class
+SHIZHONG2.C(29): error C132: 'hour': not in formal parameter list
+SHIZHONG2.C(30): error C244: 'min': can't initialize, bad type or class
+SHIZHONG2.C(30): error C132: 'min': not in formal parameter list
+SHIZHONG2.C(31): error C244: 'sec': can't initialize, bad type or class
+SHIZHONG2.C(31): error C132: 'sec': not in formal parameter list
+SHIZHONG2.C(32): error C244: 'TMOD': can't initialize, bad type or class
+SHIZHONG2.C(32): error C132: 'TMOD': not in formal parameter list
+SHIZHONG2.C(33): error C244: 'TH0': can't initialize, bad type or class
+SHIZHONG2.C(33): error C132: 'TH0': not in formal parameter list
+SHIZHONG2.C(34): error C244: 'TL0': can't initialize, bad type or class
+SHIZHONG2.C(34): error C132: 'TL0': not in formal parameter list
+SHIZHONG2.C(35): error C244: 'TH1': can't initialize, bad type or class
+SHIZHONG2.C(35): error C132: 'TH1': not in formal parameter list
+SHIZHONG2.C(36): error C244: 'TL1': can't initialize, bad type or class
+SHIZHONG2.C(36): error C132: 'TL1': not in formal parameter list
+SHIZHONG2.C(37): error C244: 'EA': can't initialize, bad type or class
+SHIZHONG2.C(37): error C132: 'EA': not in formal parameter list
+SHIZHONG2.C(38): error C244: 'ET0': can't initialize, bad type or class
+SHIZHONG2.C(38): error C132: 'ET0': not in formal parameter list
+SHIZHONG2.C(39): error C244: 'ET1': can't initialize, bad type or class
+SHIZHONG2.C(39): error C132: 'ET1': not in formal parameter list
+SHIZHONG2.C(40): error C244: 'TR0': can't initialize, bad type or class
+SHIZHONG2.C(40): error C132: 'TR0': not in formal parameter list
+SHIZHONG2.C(41): error C244: 'TR1': can't initialize, bad type or class
+SHIZHONG2.C(41): error C132: 'TR1': not in formal parameter list
+SHIZHONG2.C(42): error C141: syntax error near 'while'
+SHIZHONG2.C(42): error C141: syntax error near '1'
+SHIZHONG2.C(46): error C141: syntax error near 'if'
+SHIZHONG2.C(46): error C141: syntax error near '>=', expected ')'
+SHIZHONG2.C(48): error C279: 'temp': multiple initialization
+SHIZHONG2.C(48): error C231: 'temp': redefinition
+SHIZHONG2.C(49): error C129: missing ';' before '++'
+Target not created
+Build target 'Target 1'
+assembling STARTUP.A51...
+compiling shizhong2.c...
+linking...
+Program Size: data=23.0 xdata=0 code=794
+creating hex file from "shizhong2"...
+"shizhong2" - 0 Error(s), 0 Warning(s).

@@ -1,0 +1,509 @@
+C51 COMPILER V9.55   MAIN                                                                  04/27/2017 15:13:30 PAGE 1   
+
+
+C51 COMPILER V9.55, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN .\Objects\main.obj
+COMPILER INVOKED BY: C:\Software\Keil_v5\C51\BIN\C51.EXE main.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\List
+                    -ings\main.lst) OBJECT(.\Objects\main.obj)
+
+line level    source
+
+   1          #include <reg51.h>
+   2          #include "key.h"
+   3          #include "lcd.h"
+   4          #include "ds1302.h"
+   5          #include "jq8400.h"
+   6          //---重定义关键词---//
+   7          #ifndef u8
+              #define u8 unsigned char 
+              #endif
+  10          
+  11          #ifndef u32 
+              #define u32 unsigned int 
+              #endif
+  14          
+  15          u8 sys_time;
+  16          u8 sys_branch;
+  17          u8 sys_second;
+  18          u8 sys_year;
+  19          u8 sys_month;
+  20          u8 sys_day;
+  21          u8 sys_week; 
+  22          
+  23          u8 sys_c_time = 15;
+  24          u8 sys_c_branch = 13;
+  25          u8 sys_c_second = 13;
+  26          u8 Clock_Data[16] = "Set AlarmClock 0";
+  27          bit layout_static = 0;
+  28          bit School_Static = 0;
+  29          u8 _BIT;
+  30          
+  31          void UpdataDS1302()
+  32          {
+  33   1              TIME[0] = sys_second /10 * 16 + sys_second % 10;
+  34   1              TIME[1] = sys_branch /10 * 16 + sys_branch % 10;
+  35   1              TIME[2] = sys_time /10 * 16 + sys_time % 10;
+  36   1              TIME[3] = sys_day /10 * 16 + sys_day % 10;
+  37   1              TIME[4] = sys_month /10 * 16 + sys_month % 10;
+  38   1              TIME[5] = sys_week /10 * 16 + sys_week % 10;
+  39   1              TIME[6] = sys_year /10 * 16 + sys_year % 10;
+  40   1              Ds1302Init();
+  41   1      }
+  42          
+  43          void LcdDisplay()
+  44          {
+  45   1              u8 i;
+  46   1              if(layout_static == 0)
+  47   1              {
+  48   2                      if(School_Static == 0)
+  49   2                      {
+  50   3                              sys_second = TIME[0] / 16 * 10 + TIME[0] % 16;
+  51   3                              sys_branch = TIME[1] / 16 * 10 + TIME[1] % 16;
+  52   3                              sys_time   = TIME[2] / 16 * 10 + TIME[2] % 16;
+  53   3                              sys_day    = TIME[3] / 16 * 10 + TIME[3] % 16;
+  54   3                              sys_month  = TIME[4] / 16 * 10 + TIME[4] % 16;
+C51 COMPILER V9.55   MAIN                                                                  04/27/2017 15:13:30 PAGE 2   
+
+  55   3                              sys_week   = TIME[5] / 16 * 10 + TIME[5] % 16;
+  56   3                              sys_year   = TIME[6] / 16 * 10 + TIME[6] % 16;
+  57   3                      }
+  58   2                      LcdWriteCom(0x80 + 0X44);
+  59   2                      LcdWriteData('0' + sys_time / 10);      //时
+  60   2                      LcdWriteData('0' + sys_time % 10);                               
+  61   2                      LcdWriteData('-');
+  62   2                      LcdWriteData('0' + sys_branch / 10);//分
+  63   2                      LcdWriteData('0' + sys_branch % 10);    
+  64   2                      LcdWriteData('-');
+  65   2                      LcdWriteData('0' + sys_second / 10);//秒
+  66   2                      LcdWriteData('0' + sys_second % 10);
+  67   2      
+  68   2                      LcdWriteCom(0x80 + 2);
+  69   2                      LcdWriteData('2');
+  70   2                      LcdWriteData('0');
+  71   2                      LcdWriteData('0' + sys_year / 10);      //年
+  72   2                      LcdWriteData('0' + sys_year % 10);
+  73   2                      LcdWriteData('-');
+  74   2                      LcdWriteData('0' + sys_month / 10);     //月
+  75   2                      LcdWriteData('0' + sys_month % 10);
+  76   2                      LcdWriteData('-');
+  77   2                      LcdWriteData('0' + sys_day / 10);       //日
+  78   2                      LcdWriteData('0' + sys_day % 10);
+  79   2                      LcdWriteData(' ');
+  80   2                      LcdWriteData('0' + sys_week % 10);      //星期          
+  81   2                      
+  82   2                      if(School_Static == 1)
+  83   2                      {
+  84   3                              LcdWriteCom(0x80);
+  85   3                              LcdWriteData('0' + _BIT);
+  86   3                      }else
+  87   2                      {
+  88   3                              LcdWriteCom(0x80);
+  89   3                              LcdWriteData(' ');
+  90   3                      }               
+  91   2              }else if(layout_static == 1)
+  92   1              {
+  93   2                      LcdWriteCom(0x80);
+  94   2                      for(i=0;i<15;i++)
+  95   2                      {
+  96   3                              LcdWriteData(Clock_Data[i]);
+  97   3                      }
+  98   2                      
+  99   2                      LcdWriteCom(0x80 + 0X44);
+ 100   2                      LcdWriteData('0' + sys_c_time / 10);    //时
+ 101   2                      LcdWriteData('0' + sys_c_time % 10);                             
+ 102   2                      LcdWriteData('-');
+ 103   2                      LcdWriteData('0' + sys_c_branch / 10);//分
+ 104   2                      LcdWriteData('0' + sys_c_branch % 10);  
+ 105   2                      LcdWriteData('-');
+ 106   2                      LcdWriteData('0' + sys_c_second / 10);//秒
+ 107   2                      LcdWriteData('0' + sys_c_second % 10);
+ 108   2      
+ 109   2                      if(layout_static == 1)
+ 110   2                      {
+ 111   3                              LcdWriteCom(0x8F);
+ 112   3                              LcdWriteData('0' + _BIT);
+ 113   3                      }else
+ 114   2                      {
+ 115   3                              LcdWriteCom(0x80);
+ 116   3                              LcdWriteData(' ');
+C51 COMPILER V9.55   MAIN                                                                  04/27/2017 15:13:30 PAGE 3   
+
+ 117   3                      }               
+ 118   2              }
+ 119   1      
+ 120   1      }
+ 121          
+ 122          u8 bs_flag = 0;
+ 123          
+ 124          
+ 125          void JQ8400_Send(u8 _time)
+ 126          {
+ 127   1              JQ8400_SendData(0x0A);
+ 128   1              if(_time / 10 == 0)
+ 129   1              {
+ 130   2                      JQ8400_SendData(_time);
+ 131   2              }else
+ 132   1              {
+ 133   2                      JQ8400_SendData(_time / 10);
+ 134   2                      JQ8400_SendData(_time % 10);
+ 135   2              }
+ 136   1              JQ8400_SendData(0x0B);  
+ 137   1      }
+ 138          
+ 139          void main(void)
+ 140          {
+ 141   1              LcdInit();
+ 142   1              
+ 143   1      //      Ds1302Init();
+ 144   1              
+ 145   1              JQ8400_SendData(0x0A);
+ 146   1              JQ8400_SendData(0x03);
+ 147   1              JQ8400_SendData(0x00);
+ 148   1              JQ8400_SendData(0x0C);
+ 149   1              
+ 150   1              while(1)
+ 151   1              {
+ 152   2                      switch(KeyScan())       
+ 153   2                      {
+ 154   3                              case 1:
+ 155   3                                      if(School_Static == 0)
+ 156   3                                      {
+ 157   4                                              layout_static = ~layout_static;
+ 158   4                                              School_Static = 0;
+ 159   4                                              _BIT = 0;
+ 160   4                                      
+ 161   4                                              if(layout_static == 1)
+ 162   4                                              {
+ 163   5                                                      LcdWriteCom(0x8F);
+ 164   5                                                      LcdWriteData('0' + _BIT);
+ 165   5                                              }else
+ 166   4                                              {
+ 167   5                                                      LcdWriteCom(0x80);
+ 168   5                                                      LcdWriteData(' ');
+ 169   5                                              }
+ 170   4                                                      
+ 171   4                                              LcdWriteCom(0x01);                                      
+ 172   4                                      }
+ 173   3      
+ 174   3                                      break;
+ 175   3                              case 2:
+ 176   3                                      if(layout_static == 0)
+ 177   3                                      {
+ 178   4                                              if(School_Static == 1)
+C51 COMPILER V9.55   MAIN                                                                  04/27/2017 15:13:30 PAGE 4   
+
+ 179   4                                              {
+ 180   5                                                      UpdataDS1302();
+ 181   5                                              }
+ 182   4                                              
+ 183   4                                              School_Static = ~School_Static;
+ 184   4                                              _BIT = 0;
+ 185   4      
+ 186   4                                              if(School_Static == 1)
+ 187   4                                              {
+ 188   5                                                      LcdWriteCom(0x80);
+ 189   5                                                      LcdWriteData('0' + _BIT);
+ 190   5                                              }else
+ 191   4                                              {
+ 192   5                                                      LcdWriteCom(0x80);
+ 193   5                                                      LcdWriteData(' ');
+ 194   5                                              }                                       
+ 195   4                                      }
+ 196   3                                      break;
+ 197   3                                      
+ 198   3                              case 3:
+ 199   3                                      if(layout_static == 1)//闹钟
+ 200   3                                      {
+ 201   4                                              if(_BIT == 0)
+ 202   4                                              {
+ 203   5                                                      _BIT = 3;
+ 204   5                                              }
+ 205   4                                              else
+ 206   4                                              {
+ 207   5                                                      _BIT --;
+ 208   5                                              }
+ 209   4                                              
+ 210   4                                      }else if(School_Static == 1)
+ 211   3                                      {
+ 212   4                                              if(_BIT == 0)
+ 213   4                                              {
+ 214   5                                                      _BIT = 7;
+ 215   5                                              }
+ 216   4                                              else
+ 217   4                                              {
+ 218   5                                                      _BIT --;
+ 219   5                                              }                                       
+ 220   4                                      }
+ 221   3                                      break;
+ 222   3                              case 4:
+ 223   3                                      if(layout_static == 1)
+ 224   3                                      {
+ 225   4                                              if(_BIT == 3)
+ 226   4                                              {
+ 227   5                                                      _BIT = 0;
+ 228   5                                              }
+ 229   4                                              else
+ 230   4                                              {
+ 231   5                                                      _BIT ++;
+ 232   5                                              }
+ 233   4                                              
+ 234   4                                      }else if(School_Static == 1)
+ 235   3                                      {
+ 236   4                                              if(_BIT == 7)
+ 237   4                                              {
+ 238   5                                                      _BIT = 0;
+ 239   5                                              }
+ 240   4                                              else
+C51 COMPILER V9.55   MAIN                                                                  04/27/2017 15:13:30 PAGE 5   
+
+ 241   4                                              {
+ 242   5                                                      _BIT ++;
+ 243   5                                              }                                       
+ 244   4                                      }
+ 245   3                                      break;
+ 246   3                              case 5:
+ 247   3                                      if(layout_static == 1)//闹钟
+ 248   3                                      {
+ 249   4                                              if(_BIT == 1)
+ 250   4                                              {
+ 251   5                                                      if(sys_c_time == 0)
+ 252   5                                                      {
+ 253   6                                                              sys_c_time = 23;
+ 254   6                                                      }else
+ 255   5                                                      {
+ 256   6                                                              sys_c_time --;
+ 257   6                                                      }
+ 258   5                                              }
+ 259   4                                              else if(_BIT == 2)
+ 260   4                                              {
+ 261   5                                                      if(sys_c_branch == 0)
+ 262   5                                                      {
+ 263   6                                                              sys_c_branch = 59;
+ 264   6                                                      }else
+ 265   5                                                      {
+ 266   6                                                              sys_c_branch --;
+ 267   6                                                      }
+ 268   5                                              }else if(_BIT == 3)
+ 269   4                                              {
+ 270   5                                                      
+ 271   5                                                      if(sys_c_second == 0)
+ 272   5                                                      {
+ 273   6                                                              sys_c_second = 59;
+ 274   6                                                      }
+ 275   5                                                      else
+ 276   5                                                      {
+ 277   6                                                              sys_c_second --;
+ 278   6                                                      }
+ 279   5                                              }
+ 280   4                                      }else if(School_Static == 1)
+ 281   3                                      {
+ 282   4                                              if(_BIT == 1)
+ 283   4                                              {
+ 284   5                                                      if(sys_year <= 0)
+ 285   5                                                      {
+ 286   6                                                              sys_year = 99;
+ 287   6                                                      }else
+ 288   5                                                      {
+ 289   6                                                              sys_year --;
+ 290   6                                                      }
+ 291   5                                              }
+ 292   4                                              else if(_BIT == 2)
+ 293   4                                              {
+ 294   5                                                      if(sys_month <= 0)
+ 295   5                                                      {
+ 296   6                                                              sys_month = 12;
+ 297   6                                                      }else
+ 298   5                                                      {
+ 299   6                                                              sys_month --;
+ 300   6                                                      }
+ 301   5                                                      
+ 302   5                                              }
+C51 COMPILER V9.55   MAIN                                                                  04/27/2017 15:13:30 PAGE 6   
+
+ 303   4                                              else if(_BIT == 3)
+ 304   4                                              {
+ 305   5                                                      if(sys_day <= 0)
+ 306   5                                                      {
+ 307   6                                                              sys_day = 31;
+ 308   6                                                      }else
+ 309   5                                                      {
+ 310   6                                                              sys_day--;
+ 311   6                                                      }
+ 312   5                                              }
+ 313   4                                              else if(_BIT == 4)
+ 314   4                                              {
+ 315   5                                                      if(sys_week <= 1)
+ 316   5                                                      {
+ 317   6                                                              sys_week = 7;
+ 318   6                                                      }else
+ 319   5                                                      {
+ 320   6                                                              sys_week --;
+ 321   6                                                      }
+ 322   5                                              }
+ 323   4                                              else if(_BIT == 5)
+ 324   4                                              {
+ 325   5                                                      if(sys_time <= 0)
+ 326   5                                                      {
+ 327   6                                                              sys_time = 23;
+ 328   6                                                      }else
+ 329   5                                                      {
+ 330   6                                                              sys_time--;
+ 331   6                                                      }
+ 332   5                                              }
+ 333   4                                              else if(_BIT == 6)
+ 334   4                                              {
+ 335   5                                                      if(sys_branch <= 0)
+ 336   5                                                      {
+ 337   6                                                              sys_branch = 59;
+ 338   6                                                      }else
+ 339   5                                                      {
+ 340   6                                                              sys_branch --;
+ 341   6                                                      }
+ 342   5                                              }       
+ 343   4                                              else if(_BIT == 7)
+ 344   4                                              {
+ 345   5                                                      if(sys_second <= 0)
+ 346   5                                                      {
+ 347   6                                                              sys_second = 59;
+ 348   6                                                      }else
+ 349   5                                                      {
+ 350   6                                                              sys_second --;
+ 351   6                                                      }
+ 352   5                                              }                                       
+ 353   4                                      }
+ 354   3                                      break;
+ 355   3                              
+ 356   3                              case 6:
+ 357   3                                      if(layout_static == 1)//闹钟
+ 358   3                                      {
+ 359   4                                              if(_BIT == 1)
+ 360   4                                              {
+ 361   5                                                      sys_c_time ++;
+ 362   5                                                      if(sys_c_time >= 24)
+ 363   5                                                      {
+ 364   6                                                              sys_c_time = 0;
+C51 COMPILER V9.55   MAIN                                                                  04/27/2017 15:13:30 PAGE 7   
+
+ 365   6                                                      }
+ 366   5                                              }
+ 367   4                                              else if(_BIT == 2)
+ 368   4                                              {
+ 369   5                                                      sys_c_branch ++;
+ 370   5                                                      if(sys_c_branch >= 60)
+ 371   5                                                      {
+ 372   6                                                              sys_c_branch = 0;
+ 373   6                                                      }
+ 374   5                                              }else if(_BIT == 3)
+ 375   4                                              {
+ 376   5                                                      sys_c_second ++;
+ 377   5                                                      if(sys_c_second >= 60)
+ 378   5                                                      {
+ 379   6                                                              sys_c_second = 0;
+ 380   6                                                      }                                               
+ 381   5                                              }
+ 382   4                                      }else if(School_Static == 1)
+ 383   3                                      {
+ 384   4                                              if(_BIT == 1)
+ 385   4                                              {
+ 386   5                                                      sys_year ++;
+ 387   5                                              }
+ 388   4                                              else if(_BIT == 2)
+ 389   4                                              {
+ 390   5                                                      sys_month ++;
+ 391   5                                                      if(sys_month > 12)
+ 392   5                                                      {
+ 393   6                                                              sys_month = 0;
+ 394   6                                                      }
+ 395   5                                                      
+ 396   5                                              }
+ 397   4                                              else if(_BIT == 3)
+ 398   4                                              {
+ 399   5                                                      sys_day ++;
+ 400   5                                                      if(sys_day > 31)
+ 401   5                                                      {
+ 402   6                                                              sys_day = 0;
+ 403   6                                                      }
+ 404   5                                              }
+ 405   4                                              else if(_BIT == 4)
+ 406   4                                              {
+ 407   5                                                      sys_week ++;
+ 408   5                                                      if(sys_week > 7)
+ 409   5                                                      {
+ 410   6                                                              sys_week = 1;
+ 411   6                                                      }
+ 412   5                                              }
+ 413   4                                              else if(_BIT == 5)
+ 414   4                                              {
+ 415   5                                                      sys_time ++;
+ 416   5                                                      if(sys_time >= 24)
+ 417   5                                                      {
+ 418   6                                                              sys_time = 0;
+ 419   6                                                      }
+ 420   5                                              }
+ 421   4                                              else if(_BIT == 6)
+ 422   4                                              {
+ 423   5                                                      sys_branch ++;
+ 424   5                                                      if(sys_branch >= 60)
+ 425   5                                                      {
+ 426   6                                                              sys_branch = 0;
+C51 COMPILER V9.55   MAIN                                                                  04/27/2017 15:13:30 PAGE 8   
+
+ 427   6                                                      }
+ 428   5                                              }       
+ 429   4                                              else if(_BIT == 7)
+ 430   4                                              {
+ 431   5                                                      sys_second ++;
+ 432   5                                                      if(sys_second >= 60)
+ 433   5                                                      {
+ 434   6                                                              sys_second = 0;
+ 435   6                                                      }
+ 436   5                                              }                                       
+ 437   4                                      }                               
+ 438   3                                      break;
+ 439   3                              default:
+ 440   3                                      break;
+ 441   3                      }
+ 442   2                      
+ 443   2                      if(School_Static == 0)
+ 444   2                      {
+ 445   3                              Ds1302ReadTime();
+ 446   3                              if((sys_branch == 0)&&(sys_second == 0))
+ 447   3                              {
+ 448   4                                      bs_flag ++;
+ 449   4                              }else
+ 450   3                              {
+ 451   4                                      bs_flag = 0;
+ 452   4                              }
+ 453   3                              if((sys_time == sys_c_time)&&(sys_branch == sys_c_branch)&&(sys_second == sys_c_second))
+ 454   3                              {
+ 455   4                                      bs_flag = 0;
+ 456   4                                      JQ8400_Send(25);//闹铃
+ 457   4                              }
+ 458   3                                      
+ 459   3                              if(bs_flag == 1)
+ 460   3                              {
+ 461   4                                      JQ8400_Send(sys_time);
+ 462   4                              }
+ 463   3                              
+ 464   3                              
+ 465   3                      }
+ 466   2                      
+ 467   2                      
+ 468   2                      LcdDisplay();   
+ 469   2              }
+ 470   1      }
+ 471          
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =   1422    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =     28       2
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =      2    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

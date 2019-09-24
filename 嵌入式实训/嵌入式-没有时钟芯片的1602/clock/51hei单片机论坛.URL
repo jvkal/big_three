@@ -1,0 +1,7 @@
+[DEFAULT]
+BASEURL=http://www.51hei.com/bbs/
+[DOC_connectlike]
+BASEURL=about:blank
+[InternetShortcut]
+URL=http://www.51hei.com/bbs/
+Modified=C0DE38B1A77CCE0179

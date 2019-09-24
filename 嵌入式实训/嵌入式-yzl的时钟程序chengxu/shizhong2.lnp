@@ -1,0 +1,4 @@
+"STARTUP.obj",
+"shizhong2.obj" 
+TO "shizhong2" 
+RAMSIZE(256) 

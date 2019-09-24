@@ -1,0 +1,43 @@
+C51 COMPILER V9.57.0.0   SPK                                                               05/30/2019 16:55:52 PAGE 1   
+
+
+C51 COMPILER V9.57.0.0, COMPILATION OF MODULE SPK
+OBJECT MODULE PLACED IN spk.OBJ
+COMPILER INVOKED BY: F:\Keil_v5\C51\BIN\C51.EXE spk.c BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          #include <reg52.h> 
+   2          sbit beep = P3^7;
+   3          
+   4          void delay_spk(unsigned int i)
+   5          {
+   6   1              while(i--);
+   7   1      }
+   8          
+   9          void spk_deep()
+  10          {
+  11   1              while(1)
+  12   1              {
+  13   2                      beep = ~beep;  //蜂鸣器取反
+  14   2                      delay_spk(10);     //延时十秒
+  15   2              beep = 1;
+  16   2              delay_spk(10);
+  17   2              beep = 0;
+  18   2              delay_spk(5);
+  19   2              }
+  20   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     40    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

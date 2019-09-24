@@ -1,0 +1,69 @@
+C51 COMPILER V9.55   JQ8400                                                                04/27/2017 14:36:33 PAGE 1   
+
+
+C51 COMPILER V9.55, COMPILATION OF MODULE JQ8400
+OBJECT MODULE PLACED IN .\Objects\jq8400.obj
+COMPILER INVOKED BY: C:\Software\Keil_v5\C51\BIN\C51.EXE jq8400.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Li
+                    -stings\jq8400.lst) OBJECT(.\Objects\jq8400.obj)
+
+line level    source
+
+   1          #include "JQ8400.h"
+   2          
+   3          void Delay1us ( int T )
+   4          {
+   5   1          T = T - 70;
+   6   1          do
+   7   1          {
+   8   2              ;
+   9   2          }
+  10   1          while ( T-- );
+  11   1      }
+  12          
+  13          void JQ8400_SendData(u8 addr)
+  14          {
+  15   1          u8 i;
+  16   1      
+  17   1          EA = 0;/*发送时关掉中断，防止中断影响时序  */
+  18   1      
+  19   1          sda = 1;/*开始拉搞  */
+  20   1          Delay1us ( 1000 );
+  21   1          sda = 0;/*开始引导码*/
+  22   1          Delay1us ( 2200 );/*此处延时最少要大于2ms，此参数延时为310ms  */
+  23   1      
+  24   1          for ( i = 0; i < 8; i++ ) /*总共8位数据  */
+  25   1          {
+  26   2              sda = 1;
+  27   2              if ( addr & 0x01 ) /*3:1表示数据位1,每个位用两个脉冲表示  */
+  28   2              {
+  29   3                  Delay1us ( 500 );
+  30   3                  sda = 0;
+  31   3                  Delay1us ( 210 );
+  32   3              }
+  33   2              else              /*1：3表示数据位0 ,每个位用两个脉冲表示  */
+  34   2              {
+  35   3                  Delay1us ( 210 );
+  36   3                  sda = 0;
+  37   3                  Delay1us ( 500 );
+  38   3              }
+  39   2              addr >>= 1;
+  40   2          }
+  41   1          sda = 1;
+  42   1          EA = 1;
+  43   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     93    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+C51 COMPILER V9.55   JQ8400                                                                04/27/2017 14:36:33 PAGE 2   
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

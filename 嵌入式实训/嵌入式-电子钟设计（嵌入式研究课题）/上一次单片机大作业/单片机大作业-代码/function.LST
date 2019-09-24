@@ -1,0 +1,136 @@
+C51 COMPILER V9.57.0.0   FUNCTION                                                          05/30/2019 14:13:12 PAGE 1   
+
+
+C51 COMPILER V9.57.0.0, COMPILATION OF MODULE FUNCTION
+OBJECT MODULE PLACED IN function.OBJ
+COMPILER INVOKED BY: F:\Keil_v5\C51\BIN\C51.EXE function.c BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          
+   2          //-------------------超级用户检测----------------
+   3          void checksuper(void)                                           
+   4          {                                                                                       
+   5   1              unsigned char i;
+   6   1              if(error_flag==1)                        //若普通密码通过验证,则不验证超级密码
+*** ERROR C202 IN LINE 6 OF function.c: 'error_flag': undefined identifier
+   7   1              {       
+   8   2                      error_flag=0;
+*** ERROR C202 IN LINE 8 OF function.c: 'error_flag': undefined identifier
+   9   2                      for(i=0;i<6;i++)
+  10   2                      {
+  11   3                              if(userpsw[i]!=superpsw[i])  {error_flag=1;break;}
+*** ERROR C202 IN LINE 11 OF function.c: 'userpsw': undefined identifier
+*** ERROR C202 IN LINE 11 OF function.c: 'error_flag': undefined identifier
+  12   3                      }
+  13   2              }
+  14   1      }
+  15          
+  16          //--------------------密码检验--------------
+  17          void checkpsw(void)                                             
+  18          {                                                                                       
+  19   1              unsigned char i;
+  20   1              error_flag=0;
+*** ERROR C202 IN LINE 20 OF function.c: 'error_flag': undefined identifier
+  21   1              for(i=0;i<6;i++)
+  22   1              {
+  23   2                      if(userpsw[i]!=syspsw[i])  {error_flag=1;break;}
+*** ERROR C202 IN LINE 23 OF function.c: 'userpsw': undefined identifier
+*** ERROR C202 IN LINE 23 OF function.c: 'error_flag': undefined identifier
+  24   2              }
+  25   1      }
+  26          //--------------------密码输入--------------
+  27          
+  28          void inputpsw(void)                                       
+  29          {
+  30   1              unsigned char i;
+  31   1              for(i=0;i<6;i++)  userpsw[i]=0;
+*** ERROR C202 IN LINE 31 OF function.c: 'userpsw': undefined identifier
+  32   1              GotoXY(0,0); 
+  33   1              Print("input psw:");
+  34   1              GotoXY(12,1);
+  35   1              Print("lm:");
+  36   1              LCD_Write(1,time+0x30);         
+  37   1              for(i=0;i<6;)
+  38   1              {                               
+  39   2                      flag=0;
+  40   2                      while(flag==0);
+  41   2                      if(key=='*')            { GotoXY(i-1,1);LCD_Write(1,' ');if(i>0) userpsw[--i]=0;}
+  42   2                      else if(key=='#')       { GotoXY(i,1);LCD_Write(1,'#');break;}
+  43   2                      else                            { GotoXY(i,1);LCD_Write(1,'*');userpsw[i++]=key;}
+  44   2              }
+  45   1      
+  46   1              ltime=0;
+  47   1              while(ltime<20);
+C51 COMPILER V9.57.0.0   FUNCTION                                                          05/30/2019 14:13:12 PAGE 2   
+
+  48   1      }
+  49          //--------------------密码设定---------------
+  50          void setpsw(void)                                       
+  51          {
+  52   1              unsigned char i;
+  53   1              GotoXY(0,0); 
+  54   1              Print("set you psw:");
+  55   1              GotoXY(0,1);            
+  56   1              for(i=0;i<6;i++)
+  57   1              {
+  58   2                      flag=0;
+  59   2                      while(flag==0);
+  60   2                      if(key=='#') break;
+  61   2                      syspsw[i]=key;
+  62   2                      LCD_Write(1,key+0x30);
+  63   2                      
+  64   2              }
+  65   1              ltime=0;
+  66   1              while(ltime<20);
+  67   1              LCD_Write(0,1);
+  68   1              GotoXY(0,1); 
+  69   1              Print("set ok!");
+  70   1      
+  71   1              ltime=0;
+  72   1              while(ltime<50);                //显示欢迎信息时间
+  73   1              LCD_Write(0,1);
+  74   1      
+  75   1      }
+  76          
+  77          //------------------正确处理------------------------
+  78          void right(void)
+  79          {
+  80   1              LCD_Write(0,1);
+  81   1              GotoXY(10,0);
+  82   1              Print("open!");
+  83   1              ltime=0;
+  84   1              while(ltime<40);
+  85   1              GotoXY(10,0);
+  86   1              Print("close"); 
+  87   1              ltime=0;
+  88   1              while(ltime<40);
+  89   1              LCD_Write(0,1);
+  90   1      }
+  91          //----------------- 错误处理-------------------------
+  92          void error(void)
+  93          {
+  94   1              LCD_Write(0,1);
+  95   1              GotoXY(0,0);
+  96   1              Print("lost?");
+  97   1              ltime=0;
+  98   1              while(ltime<20);               
+  99   1              LCD_Write(0,1);
+ 100   1              time--;
+ 101   1      }
+ 102          //-------------------封锁系统-------------------------
+ 103          void lock(void)
+ 104          {
+ 105   1              LCD_Write(0,1);
+ 106   1              GotoXY(0,0);
+ 107   1              Print("warning!!!");
+ 108   1              GotoXY(0,1);
+ 109   1              Print("keep away!");
+C51 COMPILER V9.57.0.0   FUNCTION                                                          05/30/2019 14:13:12 PAGE 3   
+
+ 110   1              ltime=0;
+ 111   1              while(ltime<200);                
+ 112   1              LCD_Write(0,1); 
+ 113   1      }        
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  8 ERROR(S)

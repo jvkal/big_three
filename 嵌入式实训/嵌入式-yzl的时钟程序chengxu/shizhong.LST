@@ -1,0 +1,236 @@
+C51 COMPILER V8.02   SHIZHONG                                                              08/10/2009 09:34:36 PAGE 1   
+
+
+C51 COMPILER V8.02, COMPILATION OF MODULE SHIZHONG
+OBJECT MODULE PLACED IN shizhong.OBJ
+COMPILER INVOKED BY: D:\Program Files\Keil\C51\BIN\C51.EXE shizhong.c BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          /**********************************************************************
+   2          * 程序名;  时钟实验1
+   3          * 功  能： 数码管通过动态扫描显示时间，时间可设定,调整时间时时钟不走.
+   4          * 编程者： ZPZ
+   5          * 编程时间：2009/8/9
+   6          **********************************************************************/
+   7          #include<reg52.h>
+   8          #define uint unsigned int 
+   9          #define uchar unsigned char
+  10                          
+  11          sbit  _led=P2^7;
+  12          sbit  key1=P2^0;
+  13          sbit  key2=P2^1;
+  14          sbit  key3=P2^2;
+  15          uchar  num=0,temp=0,count=0;
+  16          uchar  aa;
+  17          uchar hour,min,sec;
+  18          uchar code table[]={0xc0,0xf9,0xa4,0xb0,0x99,0x92,0x82,0xf8,0x80,0x90};
+  19          
+  20          void  delay(uint z);
+  21          void  display(uchar a,uchar b,uchar c,uchar d,uchar e,uchar f,uchar aa);
+  22          void  read_key();
+  23          void  led();
+  24          void  time_change();
+  25          
+  26          /****************** 主函数  *******************/
+  27          void main()
+  28          {
+  29   1              P2=0xff;
+  30   1              hour=12;
+  31   1              min=0;
+  32   1              sec=0;
+  33   1              TMOD=0x11;
+  34   1              TH0=(65536-50000)/256;
+  35   1              TL0=(65536-50000)%256;
+  36   1              TH1=(65536-50000)/256;
+  37   1              TL1=(65536-50000)%256;
+  38   1              EA=1;
+  39   1              ET0=1;
+  40   1              ET1=1;
+  41   1              TR0=1;
+  42   1              TR1=1;
+  43   1              aa=0xff;
+  44   1          while(1)
+  45   1          {   
+  46   2                      time_change();  
+  47   2              display(table[hour/10],table[hour%10],table[min/10],
+  48   2                               table[min%10],table[sec/10],table[sec%10],0xff);                    
+  49   2          }
+  50   1      }
+  51          
+  52            
+  53          /****************** 显示函数  *******************/
+  54          void display(uchar a,uchar b,uchar c,uchar d,uchar e,uchar f,uchar aa)
+  55          {
+C51 COMPILER V8.02   SHIZHONG                                                              08/10/2009 09:34:36 PAGE 2   
+
+  56   1          if(num==1){P1=0x01&aa;P0=a;delay(2);}else{P1=0x01;P0=a;delay(2);}   //hour
+  57   1          if(num==1){P1=0x02&aa;P0=b;delay(2);}else{P1=0x02;P0=b;delay(2);}  //hour
+  58   1          if(num==2){P1=0x04&aa;P0=c;delay(2);}else{P1=0x04;P0=c;delay(2);} //min
+  59   1          if(num==2){P1=0x08&aa;P0=d;delay(2);}else{P1=0x08;P0=d;delay(2);} //min
+  60   1          if(num==3){P1=0x10&aa;P0=e;delay(2);}else{P1=0x10;P0=e;delay(2);} //sec
+  61   1          if(num==3){P1=0x20&aa;P0=f;delay(2);}else{P1=0x20;P0=f;delay(2);} //sec
+  62   1              
+  63   1      }
+  64          
+  65          /************** 定时器0中断函数  ***************/
+  66          void timer0() interrupt 1 
+  67          {
+  68   1              TH0=(65536-50000)/256;
+  69   1              TL0=(65536-50000)%256;
+  70   1              temp++;
+  71   1              
+  72   1      }
+  73          
+  74          /************** 定时器1中断函数  ***************/
+  75          void timer1() interrupt 3 
+  76          {
+  77   1              TH1=(65536-50000)/256;
+  78   1              TL1=(65536-50000)%256;
+  79   1              count++;
+  80   1              if(count>=20)
+  81   1              count=0;
+  82   1              
+  83   1      }
+  84          
+  85          /****************** 延时子函数  *******************/
+  86          void delay(uint z)
+  87          {
+  88   1         uint j,k;
+  89   1         for(j=z;j>0;j--)
+  90   1           for(k=120;k>0;k--);
+  91   1      }
+  92          
+  93          /****************** 读按键函数  *******************/
+  94          void read_key()
+  95          {
+  96   1        if(key1==0)
+  97   1        {      
+  98   2          _led=0;
+  99   2          delay(100);
+ 100   2          if(key1==0)
+ 101   2          {           
+ 102   3                      delay(100);
+ 103   3                              _led=1;
+ 104   3                              num++;
+ 105   3                          if(num>3){num=0;} 
+ 106   3                              while(1)
+ 107   3                              {
+ 108   4                                 
+ 109   4                          
+ 110   4                      
+ 111   4                                      if(key1==0)
+ 112   4                                  {   
+ 113   5                                          _led=0;
+ 114   5                                      delay(10);
+ 115   5                                      if(key1==0)
+ 116   5                                      {
+ 117   6                                        num++;
+C51 COMPILER V8.02   SHIZHONG                                                              08/10/2009 09:34:36 PAGE 3   
+
+ 118   6                                            if(num>3){num=0;break;}  
+ 119   6                                      }
+ 120   5                                              while(!key1);
+ 121   5                                              delay(10);
+ 122   5                                              while(!key1);
+ 123   5                                              _led=1;
+ 124   5                                      
+ 125   5                                      }
+ 126   4                                  
+ 127   4                                      if(key2==0)
+ 128   4                                  {   
+ 129   5                                          _led=0;
+ 130   5                                      delay(80);
+ 131   5                                      if(key2==0)
+ 132   5                                      {
+ 133   6                                          if(num==1){hour++;if(hour==24)hour=0;}
+ 134   6                                          if(num==2){min++;if(min==60)min=0;}
+ 135   6                                          if(num==3){sec++;if(sec==60)sec=0;}
+ 136   6                                      }
+ 137   5                                              while(!key1);
+ 138   5                                              delay(10);
+ 139   5                                              while(!key1);
+ 140   5                                              _led=1;
+ 141   5                                      
+ 142   5                                      }
+ 143   4                               
+ 144   4                                  if(key3==0)
+ 145   4                                  {   
+ 146   5                                          _led=0;
+ 147   5                                      delay(80);
+ 148   5                                      if(key3==0)
+ 149   5                                      {
+ 150   6                                          
+ 151   6                                                      if(num==1){hour--;if(hour==0)hour=23;}                          
+ 152   6                                          if(num==2){min--;if(min==0)min=59;}
+ 153   6                                          if(num==3){sec--;if(sec==59)sec=59;}
+ 154   6                                      }
+ 155   5                                              while(!key1);
+ 156   5                                              delay(10);
+ 157   5                                              while(!key1);
+ 158   5                                              _led=1;
+ 159   5                                  }
+ 160   4      
+ 161   4                                      if(count<=15)
+ 162   4                                      display(table[hour/10],table[hour%10],table[min/10],
+ 163   4                                       table[min%10],table[sec/10],table[sec%10],0xff);
+ 164   4                                      if(count>15)
+ 165   4                              display(table[hour/10],table[hour%10],table[min/10],
+ 166   4                                       table[min%10],table[sec/10],table[sec%10],0x00);
+ 167   4                                      
+ 168   4      
+ 169   4                                      
+ 170   4                          }
+ 171   3      
+ 172   3               }
+ 173   2              while(!key1);
+ 174   2              delay(10);
+ 175   2              while(!key1);
+ 176   2              _led=1;
+ 177   2        }
+ 178   1                      
+ 179   1      }
+C51 COMPILER V8.02   SHIZHONG                                                              08/10/2009 09:34:36 PAGE 4   
+
+ 180                     
+ 181          
+ 182          /****************** 时间调整函数  *******************/
+ 183          void time_change()
+ 184          {
+ 185   1          read_key();
+ 186   1              if(temp>=20)
+ 187   1              {
+ 188   2               temp=0;
+ 189   2           sec++;
+ 190   2               if(sec>=60)
+ 191   2                 {
+ 192   3                        sec=0;
+ 193   3                        min++;
+ 194   3                        if(min>=60)
+ 195   3                        {
+ 196   4                               min=0;
+ 197   4                           hour++;
+ 198   4                               if(hour>=24)
+ 199   4                               {
+ 200   5                                      hour=0;
+ 201   5                               }
+ 202   4                         }
+ 203   3                  }
+ 204   2               }
+ 205   1      }
+ 206          
+ 207          
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    700    ----
+   CONSTANT SIZE    =     10    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      7       7
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

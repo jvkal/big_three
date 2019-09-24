@@ -1,0 +1,420 @@
+C51 COMPILER V9.57.0.0   CLOCK                                                             08/31/2019 11:36:09 PAGE 1   
+
+
+C51 COMPILER V9.57.0.0, COMPILATION OF MODULE CLOCK
+OBJECT MODULE PLACED IN clock.OBJ
+COMPILER INVOKED BY: F:\Keil_v5\C51\BIN\C51.EXE clock.c DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          #include<reg52.h>//lcd1602 数字钟 可调整时间和日期
+   2          #define uint unsigned int
+   3          #define uchar unsigned char
+   4          //lcd_data=P0
+   5          //位定义
+   6          sbit lcdrs=P2^2;
+*** ERROR C202 IN LINE 6 OF clock.c: 'P2': undefined identifier
+   7          sbit lcdrw=P2^1;
+*** ERROR C202 IN LINE 7 OF clock.c: 'P2': undefined identifier
+   8          sbit lcden=P2^0;
+*** ERROR C202 IN LINE 8 OF clock.c: 'P2': undefined identifier
+   9          sbit k1=P3^3;//mod
+*** ERROR C202 IN LINE 9 OF clock.c: 'P3': undefined identifier
+  10          sbit k2=P3^2;//+
+*** ERROR C202 IN LINE 10 OF clock.c: 'P3': undefined identifier
+  11          sbit k3=P3^1;//-
+*** ERROR C202 IN LINE 11 OF clock.c: 'P3': undefined identifier
+  12          //函数声明
+  13          uchar i,t=0,k1num=0;//t为中断次数计数，k1num为k1按下的次数
+  14          uint year=2013;//year年
+  15          char h=0,m=0,s=0,w=7,month=3,day=3;//h时，m分，s秒，w星期，year年，month月，day日
+  16          
+  17          uchar code table1[]={" 2013-03-03 SUN "};//日期
+  18          uchar code table2[]={"    00:00:00    "};//时间
+  19          //延时z ms
+  20          void delay(uchar z)
+  21          {
+  22   1              uchar x,y;
+  23   1              for(x=z;x>0;x--)
+  24   1                      for(y=110;y>0;y--);
+  25   1      }
+  26          void write_com(uchar com)
+  27          {
+  28   1              lcdrs=0;
+*** ERROR C202 IN LINE 28 OF clock.c: 'lcdrs': undefined identifier
+  29   1              lcdrw=0;
+*** ERROR C202 IN LINE 29 OF clock.c: 'lcdrw': undefined identifier
+  30   1              P0=com;
+*** ERROR C202 IN LINE 30 OF clock.c: 'P0': undefined identifier
+  31   1              delay(10);
+  32   1              lcden=1;
+*** ERROR C202 IN LINE 32 OF clock.c: 'lcden': undefined identifier
+  33   1              delay(10);
+  34   1              lcden=0;
+*** ERROR C202 IN LINE 34 OF clock.c: 'lcden': undefined identifier
+  35   1      }
+  36          //lcd写数据
+  37          void write_dat(uchar dat)
+  38          {
+  39   1              lcdrs=1;
+*** ERROR C202 IN LINE 39 OF clock.c: 'lcdrs': undefined identifier
+  40   1              lcdrw=0;
+*** ERROR C202 IN LINE 40 OF clock.c: 'lcdrw': undefined identifier
+  41   1              P0=dat;
+*** ERROR C202 IN LINE 41 OF clock.c: 'P0': undefined identifier
+C51 COMPILER V9.57.0.0   CLOCK                                                             08/31/2019 11:36:09 PAGE 2   
+
+  42   1              delay(10);
+  43   1              lcden=1;
+*** ERROR C202 IN LINE 43 OF clock.c: 'lcden': undefined identifier
+  44   1              delay(10);
+  45   1              lcden=0;
+*** ERROR C202 IN LINE 45 OF clock.c: 'lcden': undefined identifier
+  46   1      }
+  47          void Monday(void)
+  48          {
+  49   1              write_com(0x80+12);
+  50   1              write_dat('M');
+  51   1              write_com(0x80+13);
+  52   1              write_dat('O');
+  53   1              write_com(0x80+14);
+  54   1              write_dat('N');
+  55   1      }
+  56          void Tuesday(void)
+  57          {
+  58   1              write_com(0x80+12);
+  59   1              write_dat('T');
+  60   1              write_com(0x80+13);
+  61   1              write_dat('U');
+  62   1              write_com(0x80+14);
+  63   1              write_dat('E');
+  64   1      }
+  65          void Wednesday(void)
+  66          {
+  67   1              write_com(0x80+12);
+  68   1              write_dat('W');
+  69   1              write_com(0x80+13);
+  70   1              write_dat('E');
+  71   1              write_com(0x80+14);
+  72   1              write_dat('D');
+  73   1      }
+  74          void Thursday(void)
+  75          {
+  76   1              write_com(0x80+12);
+  77   1              write_dat('T');
+  78   1              write_com(0x80+13);
+  79   1              write_dat('H');
+  80   1              write_com(0x80+14);
+  81   1              write_dat('U');
+  82   1      }
+  83          void Friday(void)
+  84          {
+  85   1              write_com(0x80+12);
+  86   1              write_dat('F');
+  87   1              write_com(0x80+13);
+  88   1              write_dat('R');
+  89   1              write_com(0x80+14);
+  90   1              write_dat('I');
+  91   1      }
+  92          void Saturday(void)
+  93          {
+  94   1              write_com(0x80+12);
+  95   1              write_dat('S');
+  96   1              write_com(0x80+13);
+  97   1              write_dat('A');
+  98   1              write_com(0x80+14);
+  99   1              write_dat('T');
+ 100   1      }
+ 101          void Sunday(void)
+C51 COMPILER V9.57.0.0   CLOCK                                                             08/31/2019 11:36:09 PAGE 3   
+
+ 102          {
+ 103   1              write_com(0x80+12);
+ 104   1              write_dat('S');
+ 105   1              write_com(0x80+13);
+ 106   1              write_dat('U');
+ 107   1              write_com(0x80+14);
+ 108   1              write_dat('N');
+ 109   1      }
+ 110          void display_week(uchar week)//星期显示
+ 111          {
+ 112   1              switch(week)
+ 113   1              {
+ 114   2              case 1:Monday();break;
+ 115   2              case 2:Tuesday();break;
+ 116   2              case 3:Wednesday();break;
+ 117   2              case 4:Thursday();break;
+ 118   2              case 5:Friday();break;
+ 119   2              case 6:Saturday();break;
+ 120   2              case 7:Sunday();break;
+ 121   2              }
+ 122   1      }
+ 123          //lcd初始设置
+ 124          void init(void)
+ 125          {
+ 126   1              lcden=0;
+*** ERROR C202 IN LINE 126 OF clock.c: 'lcden': undefined identifier
+ 127   1              write_com(0x38);
+ 128   1              write_com(0x0c);
+ 129   1              write_com(0x06);
+ 130   1              write_com(0x01);
+ 131   1              write_com(0x80);
+ 132   1              TMOD=0x01;
+*** ERROR C202 IN LINE 132 OF clock.c: 'TMOD': undefined identifier
+ 133   1              ET0=1;
+*** ERROR C202 IN LINE 133 OF clock.c: 'ET0': undefined identifier
+ 134   1              EA=1;
+*** ERROR C202 IN LINE 134 OF clock.c: 'EA': undefined identifier
+ 135   1              TH0=0x3c;TL0=0xb0;//50ms
+*** ERROR C202 IN LINE 135 OF clock.c: 'TH0': undefined identifier
+*** ERROR C202 IN LINE 135 OF clock.c: 'TL0': undefined identifier
+ 136   1              TR0=1;
+*** ERROR C202 IN LINE 136 OF clock.c: 'TR0': undefined identifier
+ 137   1              write_com(0x80);//第一行
+ 138   1              for(i=0;i<15;i++)
+ 139   1                      {write_dat(table1[i]);delay(5);}
+ 140   1              write_com(0x80+0x40);//第二行
+ 141   1              for(i=0;i<11;i++)
+ 142   1                      {write_dat(table2[i]);delay(5);}        
+ 143   1      }
+ 144          
+ 145          
+ 146          void display_time(uchar ad,uchar time)//时间显示
+ 147          {
+ 148   1              uchar a,b;
+ 149   1              a=time/10;b=time%10;
+ 150   1              write_com(0x80+0x40+ad);
+ 151   1              write_dat(0x30+a);
+ 152   1              write_com(0x80+0x40+1+ad);
+ 153   1              write_dat(0x30+b);
+ 154   1      }
+ 155          
+ 156          void display_date(uint nian,char yue,char ri)//日期显示
+C51 COMPILER V9.57.0.0   CLOCK                                                             08/31/2019 11:36:09 PAGE 4   
+
+ 157          {
+ 158   1              uint y1,y2,y3,y4;
+ 159   1              char a,b,c,d;
+ 160   1              y1=nian/1000;         //千位
+ 161   1              y2=nian%1000/100;     //百位
+ 162   1              y3=nian%1000%100/10;  //十位
+ 163   1              y4=nian%1000%100%10;  //个位
+ 164   1              a=yue/10;
+ 165   1              b=yue%10;
+ 166   1              c=ri/10;
+ 167   1              d=ri%10;
+ 168   1              write_com(0x80+1);
+ 169   1              write_dat(0x30+y1);
+ 170   1              write_com(0x80+2);
+ 171   1              write_dat(0x30+y2);
+ 172   1              write_com(0x80+3);
+ 173   1              write_dat(0x30+y3);
+ 174   1              write_com(0x80+4);
+ 175   1              write_dat(0x30+y4);
+ 176   1              write_com(0x80+6);
+ 177   1              write_dat(0x30+a);
+ 178   1              write_com(0x80+7);
+ 179   1              write_dat(0x30+b);
+ 180   1              write_com(0x80+9);
+ 181   1              write_dat(0x30+c);
+ 182   1              write_com(0x80+10);
+ 183   1              write_dat(0x30+d);
+ 184   1      }
+ 185          
+ 186          void keyscan(void)//按键扫描
+ 187          {
+ 188   1              if(k1==0)
+*** ERROR C202 IN LINE 188 OF clock.c: 'k1': undefined identifier
+ 189   1              {
+ 190   2                      delay(10);
+ 191   2                      if(k1==0)
+*** ERROR C202 IN LINE 191 OF clock.c: 'k1': undefined identifier
+ 192   2                      {
+ 193   3                              k1num++;TR0=0;t=0;
+*** ERROR C202 IN LINE 193 OF clock.c: 'TR0': undefined identifier
+ 194   3                              while(!k1);
+*** ERROR C202 IN LINE 194 OF clock.c: 'k1': undefined identifier
+ 195   3                              if(k1num==1)
+ 196   3                              {write_com(0x80+0x40+11);write_com(0x0f);}//s
+ 197   3                              if(k1num==2)
+ 198   3                              {write_com(0x80+0x40+8);}//m
+ 199   3                              if(k1num==3)
+ 200   3                              {write_com(0x80+0x40+5);}//h
+ 201   3                              if(k1num==4)
+ 202   3                              {write_com(0x80+14);}//week
+ 203   3                              if(k1num==5)
+ 204   3                              {write_com(0x80+10);}//day
+ 205   3                              if(k1num==6)
+ 206   3                              {write_com(0x80+7);}//month
+ 207   3                              if(k1num==7)
+ 208   3                              {write_com(0x80+4);}//year
+ 209   3                              if(k1num==8)
+ 210   3                              {k1num=0;write_com(0x0c);TR0=1;}                        
+*** ERROR C202 IN LINE 210 OF clock.c: 'TR0': undefined identifier
+ 211   3                      }
+ 212   2              }
+ 213   1              if(k1num!=0)
+C51 COMPILER V9.57.0.0   CLOCK                                                             08/31/2019 11:36:09 PAGE 5   
+
+ 214   1              {
+ 215   2                      if(k2==0)
+*** ERROR C202 IN LINE 215 OF clock.c: 'k2': undefined identifier
+ 216   2                      {
+ 217   3                              delay(5);
+ 218   3                              if(k2==0)
+*** ERROR C202 IN LINE 218 OF clock.c: 'k2': undefined identifier
+ 219   3                              {
+ 220   4                                      while(!k2);
+*** ERROR C202 IN LINE 220 OF clock.c: 'k2': undefined identifier
+ 221   4                                      if(k1num==1)
+ 222   4                                      {
+ 223   5                                              s++;
+ 224   5                                              if(s==60)
+ 225   5                                              s=0;
+ 226   5                                              display_time(10,s);
+ 227   5                                      }
+ 228   4                                      if(k1num==2)
+ 229   4                                      {
+ 230   5                                              m++;
+ 231   5                                              if(m==60)
+ 232   5                                              m=0;
+ 233   5                                              display_time(7,m);
+ 234   5                                      }
+ 235   4                                      if(k1num==3)
+ 236   4                                      {
+ 237   5                                              h++;
+ 238   5                                              if(h==24)
+ 239   5                                              h=0;
+ 240   5                                              display_time(4,h);
+ 241   5                                      }
+ 242   4                                      if(k1num==4)
+ 243   4                                      {
+ 244   5                                              w++;
+ 245   5                                              if(w==8)
+ 246   5                                              w=1;
+ 247   5                                              display_week(w);
+ 248   5                                      }
+ 249   4                                      if(k1num==5)
+ 250   4                                      {
+ 251   5                                              day++;
+ 252   5                                              if(day==32)
+ 253   5                                              day=1;
+ 254   5                                              display_date(year,month,day);
+ 255   5                                      }
+ 256   4                                      if(k1num==6)
+ 257   4                                      {
+ 258   5                                              month++;
+ 259   5                                              if(month==13)
+ 260   5                                              month=1;
+ 261   5                                              display_date(year,month,day);
+ 262   5                                      }
+ 263   4                                      if(k1num==7)
+ 264   4                                      {
+ 265   5                                              year++;
+ 266   5                                              display_date(year,month,day);
+ 267   5                                      }
+ 268   4                              }
+ 269   3                      }
+ 270   2                      if(k3==0)
+*** ERROR C202 IN LINE 270 OF clock.c: 'k3': undefined identifier
+ 271   2                      {
+C51 COMPILER V9.57.0.0   CLOCK                                                             08/31/2019 11:36:09 PAGE 6   
+
+ 272   3                              delay(10);
+ 273   3                              if(k3==0)
+*** ERROR C202 IN LINE 273 OF clock.c: 'k3': undefined identifier
+ 274   3                              {
+ 275   4                                      while(!k3);
+*** ERROR C202 IN LINE 275 OF clock.c: 'k3': undefined identifier
+ 276   4                                      if(k1num==1)
+ 277   4                                      {
+ 278   5                                              s--;
+ 279   5                                              if(s==-1)
+ 280   5                                              s=59;
+ 281   5                                              display_time(10,s);
+ 282   5                                      }
+ 283   4                                      if(k1num==2)
+ 284   4                                      {
+ 285   5                                              m--;
+ 286   5                                              if(m==-1)
+ 287   5                                              m=59;
+ 288   5                                              display_time(7,m);
+ 289   5                                      }
+ 290   4                                      if(k1num==3)
+ 291   4                                      {
+ 292   5                                              h--;
+ 293   5                                              if(h==-1)
+ 294   5                                              h=23;
+ 295   5                                              display_time(4,h);
+ 296   5                                      }
+ 297   4                                      if(k1num==4)
+ 298   4                                      {
+ 299   5                                              w--;
+ 300   5                                              if(w==0)
+ 301   5                                              w=7;
+ 302   5                                              display_week(w);
+ 303   5                                      }
+ 304   4                                      if(k1num==5)
+ 305   4                                      {
+ 306   5                                              day--;
+ 307   5                                              if(day==0)
+ 308   5                                              day=31;
+ 309   5                                              display_date(year,month,day);
+ 310   5                                      }
+ 311   4                                      if(k1num==6)
+ 312   4                                      {
+ 313   5                                              month--;
+ 314   5                                              if(month==0)
+ 315   5                                              month=12;
+ 316   5                                              display_date(year,month,day);
+ 317   5                                      }
+ 318   4                                      if(k1num==7)
+ 319   4                                      {
+ 320   5                                              year--;
+ 321   5                                              display_date(year,month,day);
+ 322   5                                      }
+ 323   4                              }
+ 324   3                      }
+ 325   2              }
+ 326   1      display_date(year,month,day);
+ 327   1      display_week(w);
+ 328   1      display_time(10,s);
+ 329   1      display_time(7,m);
+ 330   1      display_time(4,h);
+ 331   1      }
+C51 COMPILER V9.57.0.0   CLOCK                                                             08/31/2019 11:36:09 PAGE 7   
+
+ 332          
+ 333          
+ 334          void main(void)//主函数
+ 335          {
+ 336   1              init();
+ 337   1              while(1)
+ 338   1              {
+ 339   2                      keyscan();
+ 340   2              }
+ 341   1      }
+ 342          
+ 343          void timer0() interrupt 1//定时器T0中断函数
+ 344          {
+ 345   1              t++;
+ 346   1              TH0=0x3c;TL0=0xb0;//50ms
+*** ERROR C202 IN LINE 346 OF clock.c: 'TH0': undefined identifier
+*** ERROR C202 IN LINE 346 OF clock.c: 'TL0': undefined identifier
+ 347   1              if(t==20)
+ 348   1              {s++;t=0;}
+ 349   1              if(s==60)
+ 350   1              {m++;s=0;}
+ 351   1              if(m==60)
+ 352   1              {h++;m=0;}
+ 353   1              if(h==24)
+ 354   1              {w++;day++;h=0;}
+ 355   1              if(w==8)
+ 356   1              {w=1;}
+ 357   1              if(day==32)
+ 358   1              {month++;day=1;}
+ 359   1              if(month==13)
+ 360   1              {year++;month=1;}
+ 361   1      }
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  36 ERROR(S)

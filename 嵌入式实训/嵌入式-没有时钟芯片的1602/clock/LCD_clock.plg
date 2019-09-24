@@ -1,0 +1,125 @@
+<html>
+<body>
+<pre>
+<h1>礦ision Build Log</h1>
+<h2>Project:</h2>
+D:\桌面\1\clock\clock.uvproj
+Project File Date:  <unknown>
+
+<h2>Output:</h2>
+compiling clock.c...
+clock.c(6): error C202: 'P2': undefined identifier
+clock.c(7): error C202: 'P2': undefined identifier
+clock.c(8): error C202: 'P2': undefined identifier
+clock.c(9): error C202: 'P3': undefined identifier
+clock.c(10): error C202: 'P3': undefined identifier
+clock.c(11): error C202: 'P3': undefined identifier
+clock.c(28): error C202: 'lcdrs': undefined identifier
+clock.c(29): error C202: 'lcdrw': undefined identifier
+clock.c(30): error C202: 'P0': undefined identifier
+clock.c(32): error C202: 'lcden': undefined identifier
+clock.c(34): error C202: 'lcden': undefined identifier
+clock.c(39): error C202: 'lcdrs': undefined identifier
+clock.c(40): error C202: 'lcdrw': undefined identifier
+clock.c(41): error C202: 'P0': undefined identifier
+clock.c(43): error C202: 'lcden': undefined identifier
+clock.c(45): error C202: 'lcden': undefined identifier
+clock.c(126): error C202: 'lcden': undefined identifier
+clock.c(132): error C202: 'TMOD': undefined identifier
+clock.c(133): error C202: 'ET0': undefined identifier
+clock.c(134): error C202: 'EA': undefined identifier
+clock.c(135): error C202: 'TH0': undefined identifier
+clock.c(135): error C202: 'TL0': undefined identifier
+clock.c(136): error C202: 'TR0': undefined identifier
+clock.c(188): error C202: 'k1': undefined identifier
+clock.c(191): error C202: 'k1': undefined identifier
+clock.c(193): error C202: 'TR0': undefined identifier
+clock.c(194): error C202: 'k1': undefined identifier
+clock.c(210): error C202: 'TR0': undefined identifier
+clock.c(215): error C202: 'k2': undefined identifier
+clock.c(218): error C202: 'k2': undefined identifier
+clock.c(220): error C202: 'k2': undefined identifier
+clock.c(270): error C202: 'k3': undefined identifier
+clock.c(273): error C202: 'k3': undefined identifier
+clock.c(275): error C202: 'k3': undefined identifier
+clock.c(346): error C202: 'TH0': undefined identifier
+clock.c(346): error C202: 'TL0': undefined identifier
+clock.c - 36 Error(s), 0 Warning(s).
+Build target 'Target 1'
+compiling clock.c...
+clock.c(6): error C202: 'P2': undefined identifier
+clock.c(7): error C202: 'P2': undefined identifier
+clock.c(8): error C202: 'P2': undefined identifier
+clock.c(9): error C202: 'P3': undefined identifier
+clock.c(10): error C202: 'P3': undefined identifier
+clock.c(11): error C202: 'P3': undefined identifier
+clock.c(28): error C202: 'lcdrs': undefined identifier
+clock.c(29): error C202: 'lcdrw': undefined identifier
+clock.c(30): error C202: 'P0': undefined identifier
+clock.c(32): error C202: 'lcden': undefined identifier
+clock.c(34): error C202: 'lcden': undefined identifier
+clock.c(39): error C202: 'lcdrs': undefined identifier
+clock.c(40): error C202: 'lcdrw': undefined identifier
+clock.c(41): error C202: 'P0': undefined identifier
+clock.c(43): error C202: 'lcden': undefined identifier
+clock.c(45): error C202: 'lcden': undefined identifier
+clock.c(126): error C202: 'lcden': undefined identifier
+clock.c(132): error C202: 'TMOD': undefined identifier
+clock.c(133): error C202: 'ET0': undefined identifier
+clock.c(134): error C202: 'EA': undefined identifier
+clock.c(135): error C202: 'TH0': undefined identifier
+clock.c(135): error C202: 'TL0': undefined identifier
+clock.c(136): error C202: 'TR0': undefined identifier
+clock.c(188): error C202: 'k1': undefined identifier
+clock.c(191): error C202: 'k1': undefined identifier
+clock.c(193): error C202: 'TR0': undefined identifier
+clock.c(194): error C202: 'k1': undefined identifier
+clock.c(210): error C202: 'TR0': undefined identifier
+clock.c(215): error C202: 'k2': undefined identifier
+clock.c(218): error C202: 'k2': undefined identifier
+clock.c(220): error C202: 'k2': undefined identifier
+clock.c(270): error C202: 'k3': undefined identifier
+clock.c(273): error C202: 'k3': undefined identifier
+clock.c(275): error C202: 'k3': undefined identifier
+clock.c(346): error C202: 'TH0': undefined identifier
+clock.c(346): error C202: 'TL0': undefined identifier
+目标未创建
+Build target 'Target 1'
+compiling clock.c...
+clock.c(6): error C202: 'P2': undefined identifier
+clock.c(7): error C202: 'P2': undefined identifier
+clock.c(8): error C202: 'P2': undefined identifier
+clock.c(9): error C202: 'P3': undefined identifier
+clock.c(10): error C202: 'P3': undefined identifier
+clock.c(11): error C202: 'P3': undefined identifier
+clock.c(28): error C202: 'lcdrs': undefined identifier
+clock.c(29): error C202: 'lcdrw': undefined identifier
+clock.c(30): error C202: 'P0': undefined identifier
+clock.c(32): error C202: 'lcden': undefined identifier
+clock.c(34): error C202: 'lcden': undefined identifier
+clock.c(39): error C202: 'lcdrs': undefined identifier
+clock.c(40): error C202: 'lcdrw': undefined identifier
+clock.c(41): error C202: 'P0': undefined identifier
+clock.c(43): error C202: 'lcden': undefined identifier
+clock.c(45): error C202: 'lcden': undefined identifier
+clock.c(126): error C202: 'lcden': undefined identifier
+clock.c(132): error C202: 'TMOD': undefined identifier
+clock.c(133): error C202: 'ET0': undefined identifier
+clock.c(134): error C202: 'EA': undefined identifier
+clock.c(135): error C202: 'TH0': undefined identifier
+clock.c(135): error C202: 'TL0': undefined identifier
+clock.c(136): error C202: 'TR0': undefined identifier
+clock.c(188): error C202: 'k1': undefined identifier
+clock.c(191): error C202: 'k1': undefined identifier
+clock.c(193): error C202: 'TR0': undefined identifier
+clock.c(194): error C202: 'k1': undefined identifier
+clock.c(210): error C202: 'TR0': undefined identifier
+clock.c(215): error C202: 'k2': undefined identifier
+clock.c(218): error C202: 'k2': undefined identifier
+clock.c(220): error C202: 'k2': undefined identifier
+clock.c(270): error C202: 'k3': undefined identifier
+clock.c(273): error C202: 'k3': undefined identifier
+clock.c(275): error C202: 'k3': undefined identifier
+clock.c(346): error C202: 'TH0': undefined identifier
+clock.c(346): error C202: 'TL0': undefined identifier
+目标未创建
