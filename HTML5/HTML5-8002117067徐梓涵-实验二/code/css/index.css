@@ -1,0 +1,22 @@
+    /*导入字体样式*/
+    @charset "utf-8";
+    @font-face{font-family:ONYX; src:url(../font/ONYX.TTF);}
+	@font-face{font-family:TCM; src:url(../font/TCCM____.TTF);}
+	@font-face{font-family:ROCK; src:url(../font/ROCK.TTF);}
+	@font-face{font-family:BOOM; src:url(../font/BOOMBOX.TTF);}
+	@font-face{font-family:LTCH; src:url(../font/LTCH.TTF);}
+    @font-face{font-family:FZJZJW; src:url(../font/FZJZJW.TTF);}
+    /*页面样式设计*/
+    .CSS1 {white-space: pre;line-height: 0%;margin-bottom: 0%;text-transform:uppercase}
+    .CSS1 .a{font-family:ONYX; font-size:50px; color:rgb(29, 28, 28);}
+    .CSS1 .b{font-family:TCM; font-size:60px; color:#248658;}  
+    .CSS2 {white-space: pre;line-height: 80px}
+	.CSS2 .a{font-family:ROCK; font-size:28px; font-weight:bold; font-style:oblique; color:rgb(32, 32, 32);text-transform:capitalize}
+    .CSS2 .b{font-family:ROCK; font-size:40px; font-weight:bold; color:rgb(27, 26, 26);}
+    .CSS3 {line-height: 0%}
+	.CSS3 .a{font-family:BOOM; font-size:60px;}
+	.CSS3 .b{font-family:LTCH; font-size:50px; color:#e21567;}
+	.CSS4  {white-space: pre; font-family:FZJZJW; font-size:40px;line-height: 70%}
+    .CSS4 strong{color:#c20e0e;font-size:50px;}
+    /**这里使用了溢出隐藏*/
+	.CSS5{width:500px; font-family:FZJZJW; font-size:20px; color:#747474;white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
